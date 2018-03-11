@@ -95,7 +95,7 @@ def searchNode(nodeSearch):
 		print('Server responded:', response)
 		responseIP = ''
 		try:
-			responseIP = response.split(' ')[0]
+			responseIP = int( response.split(' ')[0] )
 			responsePort = response.split(' ')[1]
 		except:
 			pass
