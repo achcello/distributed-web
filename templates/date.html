@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Submit your name</title>
+</head>
+<style>
+	#home {
+	color:blue;
+	font-family: verdana;
+    font-size: 160%;
+	}
+	.city {
+    background-color: tomato;
+    color: white;
+    padding: 10px;
+    }
+</style>
+
+<body>
+<p id = "home"> Hello</p>
+<h2 class="city">Hello</h2>
+<img src="https://travel.home.sndimg.com/content/dam/images/travel/fullset/2015/05/28/big-ben-london-england.jpg.rend.hgtvcom.1280.960.suffix/1491582155388.jpeg" alt="London" style="width:100px;height:60px;"> 
+
+<p>&nbsp;&nbsp;Please submit the date.</p>
+
+	</form>
+		<form method='POST' action="/add">
+		{{ form.csrf_token }}
+		{{ form.date}}
+
+		<input type="submit" value="Submit">
+	</form>
+</body>
+</html>
