@@ -2,6 +2,7 @@ from flask import Flask, render_template, redirect, url_for, request
 from flask_wtf import Form 
 from wtforms import StringField
 from wtforms.validators import InputRequired
+import requests
 
 app = Flask(__name__)
 app.config.from_object('config.Config');
@@ -14,7 +15,9 @@ data = {'year' : '2018', 'month' : 'march'}
 
 @app.route('/data', methods = ['GET'])
 def returnAll():
-	return str(data)
+	r = requests.get('https://github.com/timeline.json')
+	
+	return r.text
 
 @app.route('/data/<string:input>', methods = ['GET'])
 def returnOne(input):
