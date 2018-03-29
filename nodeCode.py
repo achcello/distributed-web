@@ -59,6 +59,9 @@ def inputNode():
 	#print('#entering inputNode()')
 	# get the node request number
 	nodeSearch = input("Request a node:\n")
+	while (not nodeSearch.isdigit or nodeSearch == ""):
+		print("Please enter a digit, preferably in the range specified.")
+		nodeSearch = input("Request a node:\n")
 	return nodeSearch
 
 def searchNode(nodeSearch):
@@ -92,23 +95,25 @@ def searchNode(nodeSearch):
 			break
 		clientSock.sendall(nodeSearch.encode('utf-8'))
 		response = clientSock.recv(48).decode('utf-8')
+		response = response.strip()
 		print('Server responded:', response)
-		responseIP = ''
-		try:
-			responseIP = int( response.split(' ')[0] )
-			responsePort = response.split(' ')[1]
-		except:
-			pass
-		
+
 		if response == "found":
-			print(response)
 			print('Node %s found!' % nodeSearch)
 			clientSock.close()
 			break
-		elif responseIP != '':
-			print('Not found yet; contacting', response)
-			fingerTable[ responsePort[-1] ] = (responseIP, responsePort)
-			searchNode(nodeSearch)
+
+		try:
+			responseIP = response.split(" ")[0]
+			responsePort = int( response.split(" ")[1] )
+		except:
+			print("splitting the response into IP and port didn't work")
+			print("things are going to fail now gg")
+		
+		print('Not found yet; contacting', response)
+		fingerTable[ responsePort % 10 ] = (responseIP, responsePort)
+		print( fingerTable[ responsePort % 10 ])
+		searchNode(nodeSearch)
 
 
 if __name__ == '__main__':
@@ -118,6 +123,8 @@ if __name__ == '__main__':
 	and runs it in the background as the client code is run.
 	"""
 
+	n = 4 # n = number of nodes
+
 	# Create a TCP socket
 	serverSock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
@@ -125,15 +132,15 @@ if __name__ == '__main__':
 	# Make accessible to local network
 	# ask for the IP and port as user inputs, will be automated in the future
 	node_ip = 'localhost' # input('Input the node IP address: ')
-	node_id = input("Input the node's number (for now, in [0,3]): ")
+	node_id = input("Input the node's number (for now, in [0," + str(n-1) + "]): ")
 	node_port_base = 10000
 	node_port = 10000 + int(node_id)
-	wrappedID1 = (int(node_id) + 1)%4
-	wrappedID2 = (int(node_id) + 2)%4
+	wrappedID1 = (int(node_id) + 1)%n
+	wrappedID2 = (int(node_id) + 2)%n
 
 	fingerTable = {}
 	fingerTable[ str(wrappedID1) ] = (node_ip, (node_port_base + wrappedID1))
-	fingerTable[ str((int(node_id) + 2)%4) ] = (node_ip, (node_port_base + wrappedID2))
+	fingerTable[ str((int(node_id) + 2)%n) ] = (node_ip, (node_port_base + wrappedID2))
 	print('Finger table:\n', fingerTable)
 
 	node_port = 10000 + int(node_id)
