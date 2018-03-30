@@ -3,6 +3,7 @@ import sys
 import time
 import subprocess
 import multiprocessing
+from math import log
 
 def serverNode():
 	p = multiprocessing.current_process()
@@ -36,14 +37,18 @@ def serverNode():
 		else:
 			print('redirecting . . . ')
 			# look up the request in the finger table
-			distToTarget = 3 # max is n-1 which is hardcoded for now
+			distToTarget = n - 1 # max is n-1 which is hardcoded for now
 			closestID = ''
-			for ids in fingerTable.keys():
-				distToTarget = int(requestedID) - int(ids)
-				closestID = ids
-				if distToTarget <= 0:
-					break
-			response = ('localhost' + ' 1000' + closestID).encode('utf-8')
+			print("truth:", requestedID in fingerTable.keys())
+			if requestedID in fingerTable.keys():
+				response = ('localhost' + ' 1000' + requestedID).encode('utf-8')
+			else:
+				for ids in fingerTable.keys():
+					distToTarget = int(requestedID) - int(ids)
+					if distToTarget < 0:
+						break
+					closestID = ids
+				response = ('localhost' + ' 1000' + closestID).encode('utf-8')
 
 		print('sending', response)
 		client_ip.sendall(response)
@@ -76,11 +81,14 @@ def searchNode(nodeSearch):
 		# look up the request in the finger table
 		distToTarget = n - 1 # max is n-1
 		server_address = ('empty', 0)
-		for ids in fingerTable.keys():
-			distToTarget = int(nodeSearch) - int(ids)
-			server_address = fingerTable[ids]
-			if distToTarget <= 0:
-				break
+		if nodeSearch in fingerTable.keys():
+			server_address = fingerTable[nodeSearch]
+		else:
+			for ids in fingerTable.keys():
+				distToTarget = int(nodeSearch) - int(ids)
+				if distToTarget < 0:
+					break
+				server_address = fingerTable[ids]
 
 		# create the TCP socket
 		clientSock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -111,8 +119,8 @@ def searchNode(nodeSearch):
 			print("things are going to fail now gg")
 		
 		print('Not found yet; contacting', response)
-		fingerTable[ responsePort % 10 ] = (responseIP, responsePort)
-		print( fingerTable[ responsePort % 10 ])
+		fingerTable[ str(responsePort % 10) ] = (responseIP, responsePort)
+		print( fingerTable )
 		searchNode(nodeSearch)
 
 
@@ -132,15 +140,19 @@ if __name__ == '__main__':
 	# Make accessible to local network
 	# ask for the IP and port as user inputs, will be automated in the future
 	node_ip = 'localhost' # input('Input the node IP address: ')
-	node_id = input("Input the node's number (for now, in [0," + str(n-1) + "]): ")
+	node_id = input("Input the node's number (in [0," + str(n-1) + "]): ")
 	node_port_base = 10000
 	node_port = 10000 + int(node_id)
-	wrappedID1 = (int(node_id) + 1)%n
-	wrappedID2 = (int(node_id) + 2)%n
+	wrappedIDs = []
+	addID = 1
+	for _ in range( int( round( log(n, 2) ) ) ):
+		wrappedIDs.append((int(node_id) + addID)%n)
+		addID *= 2
 
+	# Generate the appropriate finger table
 	fingerTable = {}
-	fingerTable[ str(wrappedID1) ] = (node_ip, (node_port_base + wrappedID1))
-	fingerTable[ str((int(node_id) + 2)%n) ] = (node_ip, (node_port_base + wrappedID2))
+	for newFinger in wrappedIDs:	
+		fingerTable[ str( newFinger ) ] = (node_ip, (node_port_base + newFinger))
 	print('Finger table:\n', fingerTable)
 
 	node_port = 10000 + int(node_id)
@@ -149,7 +161,7 @@ if __name__ == '__main__':
 	listener = multiprocessing.Process(name='serverNode', target=serverNode)
 	listener.daemon = True
 	listener.start()
-	time.sleep(3)
+	time.sleep(2)
 	print('Listener daemon started')
 
 	while True:
