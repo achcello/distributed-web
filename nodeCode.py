@@ -1,7 +1,7 @@
 import socket
 import sys
 import time
-import keyboard
+import subprocess
 import multiprocessing
 
 def serverNode():
@@ -34,7 +34,7 @@ def serverNode():
 		if requestedID == node_id:
 			response = "found".encode('utf-8')
 		else:
-			#print('wow much lookup')
+			print('redirecting . . . ')
 			# look up the request in the finger table
 			distToTarget = 3 # max is n-1 which is hardcoded for now
 			closestID = ''
@@ -59,8 +59,8 @@ def inputNode():
 	#print('#entering inputNode()')
 	# get the node request number
 	nodeSearch = input("Request a node:\n")
-	while (not nodeSearch.isdigit or nodeSearch == ""):
-		print("Please enter a digit, preferably in the range specified.")
+	while (not nodeSearch.isdigit or nodeSearch == "" or nodeSearch == str(node_id)):
+		print("Please enter a digit, preferably in [0,n) excluding the current node.")
 		nodeSearch = input("Request a node:\n")
 	return nodeSearch
 
@@ -74,7 +74,7 @@ def searchNode(nodeSearch):
 	while True:
 
 		# look up the request in the finger table
-		distToTarget = 3 # max is n-1 which is hardcoded for now
+		distToTarget = n - 1 # max is n-1
 		server_address = ('empty', 0)
 		for ids in fingerTable.keys():
 			distToTarget = int(nodeSearch) - int(ids)
@@ -123,7 +123,7 @@ if __name__ == '__main__':
 	and runs it in the background as the client code is run.
 	"""
 
-	n = 4 # n = number of nodes
+	n = int( sys.argv[1] ) # n = number of nodes
 
 	# Create a TCP socket
 	serverSock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
