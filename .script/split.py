@@ -1,35 +1,99 @@
-#Create a script to separate a generic piece of data into chunks.
+# Create a script to separate a generic piece of data into chunks.
 # Accept data as text or as `bytes` and an integer for how many chunks are needed,
 # Return an array of chunks as bytes
+import os
+import sys
 
-def split_page(data, num_of_chunks):
+def getfilesize(filename):
+    with open(filename, "rb") as fr:
+        fr.seek(0, 2)  # move to end of the file
+        size = fr.tell()
+        print("getfilesize: size: %s" % size)
+        return fr.tell()
 
-    #Loops at least once
-    entry = True
-    while entry:
-        #Array that will hold the chunks of data
-        divided_array = []
-        # As long as the length of the array is smaller than the amount of chunks needed, keep trying to add more in
-        while len(divided_array) < num_of_chunks:
-            try:
-                entry = data.next()
-            except StopIteration:
-                entry = None
-            if entry is None:
-                # End of file
-                break
-            divided_array.append(entry)
-        if divided_array:
-            #Returns entire array
-            yield divided_array
+
+def splitfile(filename, splitsize):
+    # Open original file in read only mode
+    if not os.path.isfile(filename):
+        print("No such file as: \"%s\"" % filename)
+        return
+
+    filesize = getfilesize(filename)
+    with open(filename, "rb") as fr:
+        counter = 1
+        orginalfilename = filename.split(".")
+        readlimit = 5000  # read 5kb at a time
+        n_splits = filesize
+        print("splitfile: No of splits required: %s" % str(n_splits))
+        for i in range(n_splits + 1):
+            chunks_count = int(splitsize)
+            data_5kb = fr.read(readlimit)  # read
+            # Create split files
+            print("chunks_count: %d" % chunks_count)
+            with open(orginalfilename[0] + "_{id}.".format(id=str(counter)) + orginalfilename[1], "ab") as fw:
+                fw.seek(0)
+                fw.truncate()  # truncate original if present
+                while data_5kb:
+                    fw.write(data_5kb)
+                    if chunks_count:
+                        chunks_count -= 1
+                        data_5kb = fr.read(readlimit)
+                    else:
+                        break
+            counter += 1
+
+
+if __name__ == "__main__":
+    if len(sys.argv) < 3:
+        print("Filename or splitsize not provided: Usage:     filesplit.py filename splitsizeinkb ")
+    else:
+        filesize = int(sys.argv[2]) * 1000  # make into kb
+        filename = sys.argv[1]
+        splitfile(filename, filesize)
 
 
 # how to convert string to a byte array
 def string_to_byte():
     # b = mystring.encode()
-    #s = "ABCD"
+    # s = "ABCD"
     # b = bytearray()
     # b.extend(map(ord, s))
-    data = ""  			#string
-    data = "".encode()	#bytes
-    data = b"" 			#bytes
+    data = ""  # string
+    data = "".encode()  # bytes
+    data = b""  # bytes
+
+#    def split_page(file, num_of_chunks):
+#     # Loops at least once
+#     entry = True
+#     while entry:
+#         # Array that will hold the chunks of data
+#         divided_array = []
+#         # As long as the length of the array is smaller than the amount of chunks needed, keep trying to add more in
+#         while len(divided_array) < num_of_chunks:
+#             try:
+#                 entry = file.next()
+#             except StopIteration:
+#                 entry = None
+#             if entry is None:
+#                 # End of file
+#                 break
+#             divided_array.append(entry)
+#         if divided_array:
+#             # Returns entire array
+#             yield divided_array
+#
+#
+# def Split(inputFile, numParts, outputName):
+#     fileSize = os.stat(inputFile).st_size
+#     parts = FileSizeParts(fileSize, numParts)
+#     openInputFile = open(inputFile, 'r')
+#     outPart = 1
+#     for part in parts:
+#         if openInputFile.tell() < fileSize:
+#             fullOutputName = outputName + os.extsep + str(outPart)
+#             outPart += 1
+#             openOutputFile = open(fullOutputName, 'w')
+#             openOutputFile.writelines(openInputFile.readlines(part))
+#             openOutputFile.close()
+#     openInputFile.close()
+#     return outPart - 1
