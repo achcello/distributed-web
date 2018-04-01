@@ -11,7 +11,7 @@ ALLOWED_EXTENSIONS = set(['txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'])
 app = Flask(__name__)
 app.config.from_object('config.Config');
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
-
+##
 ip_list = [];
 @app.errorhandler(404)
 def page_not_found(error):
