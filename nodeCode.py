@@ -19,7 +19,7 @@ def serverNode():
 			time.sleep(3)
 
 	# print a connection message if it was successful
-	print('Starting up on %s port %s' % server_address)
+	print('\nListening on %s port %s' % server_address)
 	print('(Waiting for a request in background . . . )\n')
 
 	while True:
@@ -54,7 +54,7 @@ def serverNode():
 		client_ip.sendall(response)
 		client_ip.close()
 		print('Resetting listener . . .')
-		print('Request a node:')
+		print('\nRequest a node:')
 
 def inputNode():
 	"""
@@ -63,7 +63,7 @@ def inputNode():
 
 	#print('#entering inputNode()')
 	# get the node request number
-	nodeSearch = input("Request a node:\n")
+	nodeSearch = input("\nRequest a node:\n")
 	while (not nodeSearch.isdigit or nodeSearch == "" or nodeSearch == str(node_id)):
 		print("Please enter a digit, preferably in [0,n) excluding the current node.")
 		nodeSearch = input("Request a node:\n")
@@ -153,7 +153,9 @@ if __name__ == '__main__':
 	fingerTable = {}
 	for newFinger in wrappedIDs:	
 		fingerTable[ str( newFinger ) ] = (node_ip, (node_port_base + newFinger))
-	print('Finger table:\n', fingerTable)
+	print('\nFinger table:')
+	for entry in fingerTable.keys():
+		print( entry,":", fingerTable[entry])
 
 	node_port = 10000 + int(node_id)
 
