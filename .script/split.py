@@ -53,7 +53,7 @@ if __name__ == "__main__":
 
 
 # how to convert string to a byte array
-def string_to_byte():
+#def string_to_byte():
     # b = mystring.encode()
     # s = "ABCD"
     # b = bytearray()
