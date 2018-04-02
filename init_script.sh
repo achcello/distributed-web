@@ -2,7 +2,7 @@
 
 echo Creating $1 instances.
 
-counter=0
+counter=1
 while [ $counter -le $1 ]
 do
 	#echo here
