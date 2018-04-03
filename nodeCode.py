@@ -43,11 +43,12 @@ def serverNode():
 			if requestedID in fingerTable.keys():
 				response = ('localhost' + ' 1000' + requestedID).encode('utf-8')
 			else:
+				minPosDist = 0
 				for ids in fingerTable.keys():
 					distToTarget = int(requestedID) - int(ids)
-					if distToTarget < 0:
-						break
-					closestID = ids
+					if distToTarget > 0 and distToTarget < int(requestedID) - int(minPosDist):
+						minPosDist = ids
+				closestID = minPosDist
 				response = ('localhost' + ' 1000' + closestID).encode('utf-8')
 
 		print('sending', response)
