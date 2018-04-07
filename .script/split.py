@@ -51,38 +51,6 @@ if __name__ == "__main__":
         filename = sys.argv[1]
         splitfile(filename, filesize)
 
-
-# how to convert string to a byte array
-#def string_to_byte():
-    # b = mystring.encode()
-    # s = "ABCD"
-    # b = bytearray()
-    # b.extend(map(ord, s))
-    data = ""  # string
-    data = "".encode()  # bytes
-    data = b""  # bytes
-
-#    def split_page(file, num_of_chunks):
-#     # Loops at least once
-#     entry = True
-#     while entry:
-#         # Array that will hold the chunks of data
-#         divided_array = []
-#         # As long as the length of the array is smaller than the amount of chunks needed, keep trying to add more in
-#         while len(divided_array) < num_of_chunks:
-#             try:
-#                 entry = file.next()
-#             except StopIteration:
-#                 entry = None
-#             if entry is None:
-#                 # End of file
-#                 break
-#             divided_array.append(entry)
-#         if divided_array:
-#             # Returns entire array
-#             yield divided_array
-#
-#
 # def Split(inputFile, numParts, outputName):
 #     fileSize = os.stat(inputFile).st_size
 #     parts = FileSizeParts(fileSize, numParts)
