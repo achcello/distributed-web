@@ -3,6 +3,8 @@ from flask import Flask, flash, request, redirect, url_for, render_template, abo
 from flask import send_from_directory
 from werkzeug.utils import secure_filename
 import requests
+import socket               
+import sys
 
 
 UPLOAD_FOLDER = '/mnt/c/Folder'
@@ -11,8 +13,9 @@ ALLOWED_EXTENSIONS = set(['txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'])
 app = Flask(__name__)
 app.config.from_object('config.Config');
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+
 ##
-ip_list = [];
+port_list = [5005,5010];
 @app.errorhandler(404)
 def page_not_found(error):
     return render_template('404.html'),404
@@ -20,6 +23,22 @@ def page_not_found(error):
 def allowed_file(filename):
     return '.' in filename and \
            filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+
+#request from multiple servers
+#work as a tcp clientside.
+@app.route('/echo')
+def echo():
+             
+    host = '127.0.0.1'
+    result = ''.encode()
+    for port in port_list:
+	    s = socket.socket() # Create a socket object
+	    s.connect((host, port))
+	    result += s.recv(1024) #receive the first 1024 bytes from socket and concatenation bytes together
+	    message = 'get'.encode()
+	    s.send(message)
+	    s.close()
+    return result
 
 @app.route('/post', methods=['GET', 'POST'])
 def upload_file():
@@ -49,17 +68,17 @@ def get_file(filename):
 	#return file.readlines()[0] #but this works.
 	return file.read()
 '''
-#get file from multiple servers.
+#get file from multiple servers.http(not completed)
 
 @app.route('/get2', methods = ['GET'])
 def returnAll():
-	str = ''
-	for ip in ip_list:
-		r = requests.get(ip)
-		str += r.text
-	return z
-'''
+	r = ''
+	address = ['http://208.80.154.224',	'https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest/Sending_and_Receiving_Binary_Data']
+	for ip in address:
+		r += requests.get(ip).text	#str += r.text
+	return r
 
+'''
 if __name__ == '__main__':
-	app.debug=True
-	app.run('127.0.0.1', port = 5000)
+    app.debug=True
+    app.run('127.0.0.1', port = 5000)
