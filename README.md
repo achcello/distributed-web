@@ -17,12 +17,12 @@
 
 1. Use `init_script.sh` to generate the desired number of nodes. Include this number as a command line argument. These examples will use eight nodes.
 ```bash
-distributed-web$ ./init_script.sh 8
+$ ./init_script.sh 8
 Creating 8 instances.
 ```
 1.5. To create one node manually, use:
 ```bash
-distribute-web$ python3 nodeCode.py 8
+$ python3 nodeCode.py 8
 ```
 2. Assign each node an ID in the given range.
 
