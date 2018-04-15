@@ -66,8 +66,8 @@ def inputNode():
 	#print('#entering inputNode()')
 	# get the node request number
 	nodeSearch = input("\nRequest a node:\n")
-	while (not nodeSearch.isdigit or nodeSearch == "" or nodeSearch == str(node_id)):
-		print("Please enter a digit, preferably in [0,n) excluding the current node.")
+	while (not nodeSearch.isdigit or nodeSearch == "" or nodeSearch == str(node_id) or int(nodeSearch) >= n):
+		print("Please enter a digit in (0,n).")
 		nodeSearch = input("Request a node:\n")
 	return nodeSearch
 
