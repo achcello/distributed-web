@@ -10,7 +10,7 @@ dictionary = {}
 def getfilesize(filename):
     with open(filename, "rb") as fr:
         fr.seek(0, 2)  # move to end of the file
-        size = fr.tell()
+        size = fr.tell() # Returns the current position of the file read/write pointer within the file.
         print("getfilesize: size: %s" % size)
         return fr.tell()
 
@@ -52,7 +52,7 @@ if __name__ == "__main__":
     else:
         filesize = int(sys.argv[2]) * 1000  # make into kb
         filename = sys.argv[1]
-        splitfile(getDictionary(), filesize)
+        splitfile(getFile(), filesize)
         
 def getFile():    ### makes a python dictionary.....need to implement
     prose = str(input('Please enter the file path for your text file: '))
@@ -66,6 +66,7 @@ def getFile():    ### makes a python dictionary.....need to implement
         line_num += 1
     print(dictionary)
     infile.close()
+    return getDictionary();
 
 def getDictionary():
     return dictionary
