@@ -4,6 +4,9 @@
 import os
 import sys
 
+dictionary = {}
+
+
 def getfilesize(filename):
     with open(filename, "rb") as fr:
         fr.seek(0, 2)  # move to end of the file
@@ -12,16 +15,16 @@ def getfilesize(filename):
         return fr.tell()
 
 
-def splitfile(filename, splitsize):
+def splitfile(dictionary, splitsize):
     # Open original file in read only mode
-    if not os.path.isfile(filename):
-        print("No such file as: \"%s\"" % filename)
+    if not os.path.isfile(dictionary):
+        print("No such file as: \"%s\"" % dictionary)
         return
 
-    filesize = getfilesize(filename)
-    with open(filename, "rb") as fr:
+    filesize = getfilesize(dictionary)
+    with open(dictionary, "rb") as fr:
         counter = 1
-        orginalfilename = filename.split(".")
+        orginalfilename = dictionary.split(".")
         readlimit = 5000  # read 5kb at a time
         n_splits = filesize
         print("splitfile: No of splits required: %s" % str(n_splits))
@@ -49,13 +52,13 @@ if __name__ == "__main__":
     else:
         filesize = int(sys.argv[2]) * 1000  # make into kb
         filename = sys.argv[1]
-        splitfile(filename, filesize)
+        splitfile(getDictionary(), filesize)
         
 def getFile():    ### makes a python dictionary.....need to implement
     prose = str(input('Please enter the file path for your text file: '))
 
     dictionary = {}
-
+    
     infile = open(prose, 'r')
     line_num = 1
     for line in infile:
@@ -64,3 +67,5 @@ def getFile():    ### makes a python dictionary.....need to implement
     print(dictionary)
     infile.close()
 
+def getDictionary():
+    return dictionary
