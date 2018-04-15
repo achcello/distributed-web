@@ -50,3 +50,17 @@ if __name__ == "__main__":
         filesize = int(sys.argv[2]) * 1000  # make into kb
         filename = sys.argv[1]
         splitfile(filename, filesize)
+        
+def getFile():    ### makes a python dictionary.....need to implement
+    prose = str(input('Please enter the file path for your text file: '))
+
+    dictionary = {}
+
+    infile = open(prose, 'r')
+    line_num = 1
+    for line in infile:
+        dictionary[line_num] = line
+        line_num += 1
+    print(dictionary)
+    infile.close()
+
