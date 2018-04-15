@@ -26,6 +26,14 @@ $ python3 nodeCode.py 8
 ```
 2. Assign each node an ID in the given range.
 
+### Divided files to store into Nodes
+
+1. Use 'split.py' to split the file into a specified amount of by using 'splitfile' and retrieve file sizes by using 'getfilesize'
+  tested with textfile: No exit and shakespeare and tested with jpeg.
+  $ splitfile(shakespeare.txt, int(sys.argv[2]) * 1000)
+2. Use 'join.py' to join the divided files back together.
+  $ join(mnt/Users/directory, joint.txt)
+
 ## Features
 
 * Finger tables of node addresses are generated upon node creation.
