@@ -15,16 +15,17 @@ def getfilesize(filename):
         return fr.tell()
 
 
-def splitfile(dictionary, splitsize):
+def splitfile(filename, splitsize):
     # Open original file in read only mode
-    if not os.path.isfile(dictionary):
-        print("No such file as: \"%s\"" % dictionary)
+    if not os.path.isfile(filename):
+        print("No such file as: \"%s\"" % filename)
         return
 
-    filesize = getfilesize(dictionary)
-    with open(dictionary, "rb") as fr:
+    filesize = getfilesize(filename)
+    getFile(filename)
+    with open(filename, "rb") as fr:
         counter = 1
-        orginalfilename = dictionary.split(".")
+        orginalfilename = filename.split(".")
         readlimit = 5000  # read 5kb at a time
         n_splits = filesize
         print("splitfile: No of splits required: %s" % str(n_splits))
@@ -33,7 +34,7 @@ def splitfile(dictionary, splitsize):
             data_5kb = fr.read(readlimit)  # read
             # Create split files
             print("chunks_count: %d" % chunks_count)
-            with open(orginalfilename[0] + "_{id}.".format(id=str(counter)) + orginalfilename[1], "ab") as fw:
+            with open(orginalfilename[0] + "_{id}.".format(id=str(counter)) + orginalfilename[1], "ab") as fw:             
                 fw.seek(0)
                 fw.truncate()  # truncate original if present
                 while data_5kb:
@@ -52,7 +53,7 @@ if __name__ == "__main__":
     else:
         filesize = int(sys.argv[2]) * 1000  # make into kb
         filename = sys.argv[1]
-        splitfile(getFile(filename), filesize)
+        splitfile(filename, filesize)
         
 def getFile(filename):    ### makes a python dictionary.....need to implement
     dictionary = {}
@@ -68,3 +69,15 @@ def getFile(filename):    ### makes a python dictionary.....need to implement
 
 def getDictionary():
     return dictionary
+
+ def split_dictionary(dictionary, chunks):
+    # prep with empty dicts
+    list = [dict() for idx in xrange(chunks)]
+    idx = 0
+    for k,v in input_dict.iteritems():
+        list[idx][k] = v
+        if idx < chunks-1:  # indexes start at 0
+            idx += 1
+        else:
+            idx = 0
+    return list
