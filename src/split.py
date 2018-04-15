@@ -4,10 +4,13 @@
 import os
 import sys
 
+dictionary = {}
+
+
 def getfilesize(filename):
     with open(filename, "rb") as fr:
         fr.seek(0, 2)  # move to end of the file
-        size = fr.tell()
+        size = fr.tell() # Returns the current position of the file read/write pointer within the file.
         print("getfilesize: size: %s" % size)
         return fr.tell()
 
@@ -19,6 +22,7 @@ def splitfile(filename, splitsize):
         return
 
     filesize = getfilesize(filename)
+    getFile(filename)
     with open(filename, "rb") as fr:
         counter = 1
         orginalfilename = filename.split(".")
@@ -30,7 +34,7 @@ def splitfile(filename, splitsize):
             data_5kb = fr.read(readlimit)  # read
             # Create split files
             print("chunks_count: %d" % chunks_count)
-            with open(orginalfilename[0] + "_{id}.".format(id=str(counter)) + orginalfilename[1], "ab") as fw:
+            with open(orginalfilename[0] + "_{id}.".format(id=str(counter)) + orginalfilename[1], "ab") as fw:             
                 fw.seek(0)
                 fw.truncate()  # truncate original if present
                 while data_5kb:
@@ -51,16 +55,29 @@ if __name__ == "__main__":
         filename = sys.argv[1]
         splitfile(filename, filesize)
         
-def getFile():    ### makes a python dictionary.....need to implement
-    prose = str(input('Please enter the file path for your text file: '))
-
+def getFile(filename):    ### makes a python dictionary.....need to implement
     dictionary = {}
-
-    infile = open(prose, 'r')
+    
+    infile = open(filename, 'r')
     line_num = 1
     for line in infile:
         dictionary[line_num] = line
         line_num += 1
     print(dictionary)
     infile.close()
+    return getDictionary();
 
+def getDictionary():
+    return dictionary
+
+ def split_dictionary(dictionary, chunks):
+    # prep with empty dicts
+    list = [dict() for idx in xrange(chunks)]
+    idx = 0
+    for k,v in input_dict.iteritems():
+        list[idx][k] = v
+        if idx < chunks-1:  # indexes start at 0
+            idx += 1
+        else:
+            idx = 0
+    return list
