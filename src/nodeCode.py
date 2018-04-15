@@ -28,7 +28,8 @@ def serverNode():
 		client_ip, client_port = serverSock.accept()
 
 		# receive node search request from client
-		data = client_ip.recv(1)
+		data = client_ip.recv(1) #retrieve data from split.py
+		#https://stackoverflow.com/questions/13698352/storing-and-accessing-node-attributes-python-networkx 
 		requestedID = data.decode('utf-8')
 		print("Searching for node", requestedID) # D E B U G    
 
