@@ -4,9 +4,6 @@
 import os
 import sys
 
-dictionary = {}
-
-
 def getfilesize(filename):
     with open(filename, "rb") as fr:
         fr.seek(0, 2)  # move to end of the file
@@ -34,7 +31,8 @@ def splitfile(filename, splitsize):
             data_5kb = fr.read(readlimit)  # read
             # Create split files
             print("chunks_count: %d" % chunks_count)
-            with open(orginalfilename[0] + "_{id}.".format(id=str(counter)) + orginalfilename[1], "ab") as fw:             
+            with open(orginalfilename[0] + "_{id}.".format(id=str(counter)) + orginalfilename[1], "ab") as fw:     
+                dictionary += originalfilename
                 fw.seek(0)
                 fw.truncate()  # truncate original if present
                 while data_5kb:
@@ -45,6 +43,7 @@ def splitfile(filename, splitsize):
                     else:
                         break
             counter += 1
+     return dictionary
 
 
 if __name__ == "__main__":
@@ -65,10 +64,6 @@ def getFile(filename):    ### makes a python dictionary.....need to implement
         line_num += 1
     print(dictionary)
     infile.close()
-    return getDictionary();
-
-def getDictionary():
-    return dictionary
 
  def split_dictionary(dictionary, chunks):
     # prep with empty dicts
