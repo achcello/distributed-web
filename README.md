@@ -35,9 +35,10 @@ $ python3 nodeCode.py 8
 ### Run Flask Server
 
 1. Open 'filePost.py' and specify host and port in main method. Run in terminal:
-'''
+
 $ python3 filePost.py
-'''
+
+
 2.1. To upload file, in the broswer run:
 http://host:port/post
 
