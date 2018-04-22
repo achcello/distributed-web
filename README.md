@@ -28,15 +28,10 @@ $ python3 nodeCode.py 8
 
 ### Divided files to store into Nodes
 
-1. Use 'split.py' to split the file into a specified amount of by using 'splitfile' and retrieve file sizes by using 'getfilesize'
-  tested with textfile: No exit and shakespeare and tested with jpeg.
-  ```bash
-  $ splitfile(shakespeare.txt, int(sys.argv[2]) * 1000)
-  ```
-2. Use 'join.py' to join the divided files back together.
-  ```bash
-  $ join(mnt/Users/directory, joint.txt)
-  ```
+1. Using 'split.py' allows a dictionary to be split equally by keys in order to distribute the webpages on multiple servers.
+
+2. Using 'join.py' rejoins the split code together based on the keys made in the dictionaries.
+ 
 
 ## Features
 
