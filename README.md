@@ -31,7 +31,15 @@ $ python3 nodeCode.py 8
 1. Using 'split.py' allows a dictionary to be split equally by keys in order to distribute the webpages on multiple servers.
 
 2. Using 'join.py' rejoins the split code together based on the keys made in the dictionaries.
- 
+
+### Run Flask Server
+
+1. Open 'filePost.py' and specify host and port in main method. Run in terminal:
+'''
+$ python3 filePost.py
+'''
+2.1. To upload file, in the broswer run:
+http://host:port/post
 
 ## Features
 
