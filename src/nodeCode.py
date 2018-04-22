@@ -34,6 +34,7 @@ def serverNode():
 		print("Searching for node", requestedID) # D E B U G    
 
 		if requestedID == node_id:
+			#dict =  {'Name' : "chord_1"}
 			response = "found".encode('utf-8')
 		else:
 			print('redirecting . . . ')
@@ -110,6 +111,7 @@ def searchNode(nodeSearch):
 
 		if response == "found":
 			print('Node %s found!' % nodeSearch)
+			#print("dict['Name']: ")
 			clientSock.close()
 			break
 
