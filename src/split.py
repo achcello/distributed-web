@@ -5,7 +5,7 @@ import os
 import sys
 
 def getfilesize(filename):
-    with open(filename, "rb") as fr:
+    with os.startfile(filename, "rb") as fr:
         if not os.path.isfile(filename):
         print("No such file as: \"%s\"" % filename)
             return
@@ -23,7 +23,7 @@ def splitfile(filename, splitsize):
 
     filesize = getfilesize(filename)
     getFile(filename)
-    with open(filename, "rb") as fr:
+    with os.startfile(filename) as fr:
         if not os.path.isfile(filename):
         print("No such file as: \"%s\"" % filename)
             return
@@ -63,7 +63,7 @@ if __name__ == "__main__":
 def getFile(filename):    ### makes a python dictionary.....need to implement
     dictionary = {}
     
-    infile = open(filename, 'r')
+    infile = os.startfile(filename)
     line_num = 1
     for line in infile:
         dictionary[line_num] = line
