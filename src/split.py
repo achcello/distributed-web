@@ -6,6 +6,9 @@ import sys
 
 def getfilesize(filename):
     with open(filename, "rb") as fr:
+        if not os.path.isfile(filename):
+        print("No such file as: \"%s\"" % filename)
+            return
         fr.seek(0, 2)  # move to end of the file
         size = fr.tell() # Returns the current position of the file read/write pointer within the file.
         print("getfilesize: size: %s" % size)
@@ -21,6 +24,9 @@ def splitfile(filename, splitsize):
     filesize = getfilesize(filename)
     getFile(filename)
     with open(filename, "rb") as fr:
+        if not os.path.isfile(filename):
+        print("No such file as: \"%s\"" % filename)
+            return
         counter = 1
         orginalfilename = filename.split(".")
         readlimit = 5000  # read 5kb at a time
